@@ -1,14 +1,18 @@
 class Tour {
-    constructor(_id, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Start_Tour, End_Tour) {
+    constructor(_id, Name_Tour, Type_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding, Start_Tour, End_Tour, total_Date) {
         this._id = _id
         this.Name_Tour = Name_Tour
+        this.Type_Tour = Type_Tour
         this.Price_Tour = Price_Tour
         this.Image_Tour = Image_Tour
         this.Title_Tour = Title_Tour
         this.Description_Tour = Description_Tour
+        this.Outstanding_Tour = Outstanding
         this.Start_Tour = Start_Tour
         this.End_Tour = End_Tour
+        this.total_Date = total_Date
     }
+
     async CreateTour(db) {
         try {
             const result_Create = await db.collection('Tours').insertOne(this)
@@ -18,6 +22,7 @@ class Tour {
             throw (error)
         }
     }
+
     static async ShowAll(db, page, limit) {
         try {
             const ResultGetTours = await db.collection('Tours').find({})
@@ -38,6 +43,7 @@ class Tour {
             throw (error)
         }
     }
+
     static async Delete(db, id) {
         try {
             const Result_Delete = await db.collection('Tours').deleteOne({ _id: id })
@@ -47,6 +53,7 @@ class Tour {
             throw (error)
         }
     }
+
     async UpdateTour(db, id) {
         try {
             if (id) {
@@ -72,14 +79,19 @@ class Tour {
         }
     }
 
-    static async Search(db, value, page, limit) {
+    static async Search(db, NameSearch, PriceSearch, page, limit) {
         try {
             const resultSearch = await db.collection('Tours')
-                .find({ Name_Tour: { $regex: new RegExp(value, 'i') } })
-                .skip((page - 1) * limit)
+                .find({
+                    $or: [
+                        { Name_Tour: { $regex: new RegExp(NameSearch, 'i') } },
+                        { Price_Tour: { $regex: new RegExp(PriceSearch, 'i') } }
+                    ]
+                })
                 .limit(limit)
                 .sort({ Price_Tour: -1 })
                 .toArray()
+            // console.log(resultSearch);
             const totalItems = await resultSearch.length
             return {
                 totalItems: totalItems,
@@ -92,6 +104,7 @@ class Tour {
             throw (error)
         }
     }
+
     static async Detail(db, id) {
         const resultDetail = await db.collection('Tours')
             .find({ _id: id })
@@ -100,4 +113,5 @@ class Tour {
         return resultDetail
     }
 }
+
 export default Tour
