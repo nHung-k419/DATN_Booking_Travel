@@ -3,10 +3,10 @@ import Tour from '../Models/Tour.js';
 import { ObjectId } from 'mongodb';
 class Tour_Controller {
     Create_Tour(req, res, next) {
-        const { Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Start_Tour, End_Tour } = req.body
+        const { id_Category, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding_Tour, Start_Tour, End_Tour, total_Date } = req.body
         Connection.connect().then(async (db) => {
             try {
-                const Create_Tour = new Tour(undefined, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Start_Tour, End_Tour)
+                const Create_Tour = new Tour(undefined, id_Category, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding_Tour, Start_Tour, End_Tour, total_Date)
                 const result = await Create_Tour.CreateTour(db)
                 console.log(result);
             } catch (error) {
@@ -42,10 +42,10 @@ class Tour_Controller {
     }
     UpdateTour(req, res, next) {
         const { id } = req.params
-        const { Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Start_Tour, End_Tour } = req.body
+        const { id_Category, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding_Tour, Start_Tour, End_Tour, total_Date } = req.body
         Connection.connect().then(async (db) => {
             try {
-                const Update_Tour = new Tour(undefined, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Start_Tour, End_Tour)
+                const Update_Tour = new Tour(undefined, id_Category, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding_Tour, Start_Tour, End_Tour, total_Date)
                 if (Update_Tour) {
                     const result = await Update_Tour.UpdateTour(db, new ObjectId(id))
                     console.log(result);
@@ -57,10 +57,10 @@ class Tour_Controller {
         })
     }
     SearchTour(req, res, next) {
-        const { valueSearch, page, limit } = req.query
+        const { NameSearch, page, limit, PriceSearch } = req.query
         Connection.connect().then(async (db) => {
             try {
-                const resultSearch = await Tour.Search(db, valueSearch, parseInt(page), parseInt(limit))
+                const resultSearch = await Tour.Search(db, NameSearch, parseInt(PriceSearch), parseInt(page), parseInt(limit))
                 if (resultSearch) return res.status(200).json({ search: resultSearch })
             } catch (error) {
                 console.log(err)
@@ -72,7 +72,7 @@ class Tour_Controller {
         Connection.connect().then(async (db) => {
             try {
                 const detailTour = await Tour.Detail(db, new ObjectId(id))
-                if(detailTour) return res.status(200).json({detailTour : detailTour})
+                if (detailTour) return res.status(200).json({ detailTour: detailTour })
             } catch (error) {
                 console.log(error);
             }
