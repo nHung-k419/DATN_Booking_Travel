@@ -10,7 +10,7 @@ class User {
     static async Check_UserisExist(db, Email) {
         try {
             const result_check = await db.collection('Users').findOne({ Email: Email })
-            return result_check 
+            return result_check
         } catch (error) {
             console.log('Error', error);
             throw error;
@@ -26,12 +26,12 @@ class User {
     }
 
     // Login
-   static async Find_user(db,Email){
+    static async Find_user(db, Email) {
         try {
-            return await db.collection('Users').findOne({Email : Email})
+            return await db.collection('Users').findOne({ Email: Email })
 
         } catch (error) {
-            console.log('error',error);
+            console.log('error', error);
         }
     }
 

@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 import bcrypt from "bcrypt";
 import Auth from '../MiddleWare/Jwt/Auth.js';
 import jwt from "jsonwebtoken";
-import "dotenv/config.js"; 
+import "dotenv/config.js";
 
 class User_Controller {
     Register(req, res, next) {
@@ -61,8 +61,8 @@ class User_Controller {
                         console.log(err);
                     } else {
                         if (result) {
-                            const AccessToken = Auth.createAccessToken(find_user.Name,find_user.Email,find_user.role)
-                            const RefeshToken = Auth.GeneralRefeshToken(find_user.Name,find_user.Email,find_user.role)
+                            const AccessToken = Auth.createAccessToken(find_user.Name, find_user.Email, find_user.role)
+                            const RefeshToken = Auth.GeneralRefeshToken(find_user.Name, find_user.Email, find_user.role)
                             if (AccessToken) {
                                 res.cookie('AccessToken', AccessToken, {
                                     httpOnly: true,
@@ -80,7 +80,7 @@ class User_Controller {
             }
         })
     }
-    
+
     RefeshToken(req, res, next) {
         Connection.connect().then(async (db) => {
             try {
@@ -91,8 +91,8 @@ class User_Controller {
                             return res.status(401).json({ message: "The user is not authentication" })
                         }
                         if (user) {
-                            const NewAccessToken = Auth.createAccessToken(user.name,user.email, user.role)
-                            return res.status(200).json({user , NewAccessToken : NewAccessToken})
+                            const NewAccessToken = Auth.createAccessToken(user.name, user.email, user.role)
+                            return res.status(200).json({ user, NewAccessToken: NewAccessToken })
                         } else {
                             return res.status(401).json({ message: "The user is not authentication" })
                         }
@@ -104,9 +104,6 @@ class User_Controller {
                 console.log(error);
             }
         })
-    }
-    getall(req, res) {
-        console.log('hihi');
     }
 }
 export default new User_Controller()
