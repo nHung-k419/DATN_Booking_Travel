@@ -8,7 +8,7 @@ class Tour_Controller {
             try {
                 const Create_Tour = new Tour(undefined, id_Category, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding_Tour, Start_Tour, End_Tour, total_Date)
                 const result = await Create_Tour.CreateTour(db)
-                console.log(result);
+                if(result) return res.status(200).json({message : 'Created Tour Success'})
             } catch (error) {
                 console.log(error)
             }
@@ -33,7 +33,7 @@ class Tour_Controller {
             try {
                 const Delete_Tour = await Tour.Delete(db, new ObjectId(id))
                 if (Delete_Tour) {
-                    return res.status(200).json({ message: "delete Success" })
+                    return res.status(200).json({ message: "Delete Success" })
                 }
             } catch (error) {
                 console.log(error);
@@ -48,7 +48,6 @@ class Tour_Controller {
                 const Update_Tour = new Tour(undefined, id_Category, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding_Tour, Start_Tour, End_Tour, total_Date)
                 if (Update_Tour) {
                     const result = await Update_Tour.UpdateTour(db, new ObjectId(id))
-                    console.log(result);
                     if (result) return res.status(200).json({ message: "Update Success" })
                 }
             } catch (error) {
