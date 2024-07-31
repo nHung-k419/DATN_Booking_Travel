@@ -105,8 +105,5 @@ class User_Controller {
             }
         })
     }
-    getall(req,res){
-        console.log('123');
-    }
 }
 export default new User_Controller()
