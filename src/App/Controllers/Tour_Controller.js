@@ -8,7 +8,7 @@ class Tour_Controller {
             try {
                 const Create_Tour = new Tour(undefined, id_Category, Name_Tour, Price_Tour, Image_Tour, Title_Tour, Description_Tour, Outstanding_Tour, Start_Tour, End_Tour, total_Date)
                 const result = await Create_Tour.CreateTour(db)
-                if(result) return res.status(200).json({message : 'Created Tour Success'})
+                if (result) return res.status(200).json({ message: 'Created Tour Success' })
             } catch (error) {
                 console.log(error)
             }

@@ -14,7 +14,6 @@ class ServiceTour_Controller {
    }
    CreateService(req, res, next) {
       const { Name_Service } = req.body
-      console.log(Name_Service);
       Connection.connect().then(async (db) => {
          try {
             const CheckService = await Service.FindService(db, Name_Service)

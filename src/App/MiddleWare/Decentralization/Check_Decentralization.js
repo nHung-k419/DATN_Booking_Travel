@@ -3,7 +3,7 @@ function Check_Decentralization(req, res, next) {
     Connection.connect().then(async (db) => {
         let Acounts_User = await db.collection('Users').find({}).toArray()
         let Email = req.body.Email
-        let Accoutn = Acounts_User.find(find => find.Email === Email)
+        let Accoutn = Acounts_User.find(acc => acc.Email === Email)
         if (Accoutn.role === 'Admin' || Accoutn.role === 'admin') {
             res.cookie('Role', JSON.stringify(Accoutn))
             console.log('you have permission access');

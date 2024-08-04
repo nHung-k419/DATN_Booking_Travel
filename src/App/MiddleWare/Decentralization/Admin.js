@@ -1,6 +1,6 @@
 
 function Admin(req, res, next) {
-    const Object = req.cookies.Role
+    const Object = JSON.parse(req.cookies.Role)
     if (Object.role === 'Admin' || Object.role === 'admin') {
         // console.log('You are Admin');
         next()

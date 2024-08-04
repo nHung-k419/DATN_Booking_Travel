@@ -1,6 +1,6 @@
 
 function User(req, res, next) {
-    const Object = req.cookies.Role
+    const Object = JSON.parse(req.cookies.Role)
     if (Object.role === 'User' || Object.role === 'user') {
         // console.log('You are is User');
         next()

@@ -10,16 +10,18 @@ class User_Controller {
     Register(req, res, next) {
         const { Name, Email, Password } = req.body
         const role = 'User'
-        if (!Name || !Email || !Password) {
+        const reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+        const isCheckEmail = reg.test(Email)
+        if (Name === "" || !isCheckEmail || Password === "") {
             return res
                 .status(400)
-                .send({ error: 'Please enter complete infomation' });
+                .send({ errorMessage: 'Please enter complete infomation' });
         }
         Connection.connect().then(async (db) => {
             try {
                 const result_user = await User.Check_UserisExist(db, Email)
                 if (result_user) {
-                    res.status(400).send({ error: 'Email is already taken' })
+                   return res.status(400).send({ error: 'Email is already taken' })
                 } else {
                     bcrypt.hash(Password, 10, (err, hash) => {
                         if (err) {
@@ -32,7 +34,6 @@ class User_Controller {
                                     console.log('Create new user');
                                     return res.status(200).send({ message: 'Register is successful' })
                                 } else {
-
                                     return res.status(400).send({ message: 'Register is failed' })
                                 }
                             })
@@ -47,14 +48,16 @@ class User_Controller {
 
     Login(req, res, next) {
         const { Email, Password } = req.body
-        if (!Email || !Password) {
+        const reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
+        const isCheckEmail = reg.test(Email)
+        if (Email === "" || Password === "" || !isCheckEmail) {
             return res.status(400).send({ message: 'Please enter complete infomation' })
         }
         Connection.connect().then(async (db) => {
             try {
                 const find_user = await User.Find_user(db, Email)
                 if (!find_user) {
-                    return res.status('404').send({ message: 'Email not founded' })
+                    return res.status('404').send({ message: 'Email not found' })
                 }
                 bcrypt.compare(Password, find_user.Password, (err, result) => {
                     if (err) {
